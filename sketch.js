@@ -8,16 +8,16 @@ var mines=[];
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  for(i=0;i<30;i++){
-    for(j=0;j<16;j++){
+  for(var i=0;i<30;i++){
+    for(var j=0;j<16;j++){
       minefield.push(new square(i,j));
     }
   }
   mines=getRandom(minefield,mineCount);
-  for(i=0;i<mines.length;i++){
+  for(var i=0;i<mines.length;i++){
     minefield[mines[i]].hasMine=true;
   }
-  for (i=0;i<minefield.length;i++){
+  for (var i=0;i<minefield.length;i++){
     // if(minefield[i].hasMine){
     //   console.log("this has a mine");
     // }else{
@@ -34,8 +34,14 @@ function setup() {
 function draw() {
   background(30);
   fill(211,211,211);
-  for (i=0;i<minefield.length;i++){
-    rect(minefield[i].xpos*20,minefield[i].ypos*20,20,20)
+  for (var i=0;i<minefield.length;i++){
+    minefield[i].display();
+  }
+}
+
+function mousePressed(){
+  for (var i=0;i<minefield.length;i++){
+    minefield[i].clicked;
   }
 }
 
@@ -56,7 +62,7 @@ function getRandom(arr, n) {
 
 function getMineNumber(arr) {
   count=0;
-  for (a=0; a<arr.length; a++){
+  for (var a=0; a<arr.length; a++){
     if(minefield[arr[a]].hasMine){
       count++;
     }
