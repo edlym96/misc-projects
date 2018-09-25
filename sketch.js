@@ -75,9 +75,13 @@ function getMineNumber(arr) {
 
 function clicked(index) {
   minefield[index].isPressed=true;
+  console.log("entered the next click");
   if(minefield[index].number == 0){
+    console.log(index);
     for(var i=0;i<minefield[index].adjacentSquares.length;i++){
-      console.log(minefield[index].adjacentSquares[i]);
+      if(!minefield[minefield[index].adjacentSquares[i]].isPressed){
+        clicked(minefield[index].adjacentSquares[i]);
+      }
     }
   }
 }
