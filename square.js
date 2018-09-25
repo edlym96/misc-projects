@@ -40,6 +40,11 @@ function square(xpos,ypos){
 			fill(50,50,50);
 			ellipse(this.startingX+this.xpos*this.len+this.len/2,this.startingY+this.ypos*this.len+this.len/2, this.len/2,this.len/2);
 		}
+		if(this.hasFlag){
+			textSize(14);
+			fill(237,41,57)
+			text("!", this.startingX+this.xpos*this.len+this.len/3, this.startingY+this.ypos*this.len+2*this.len/3);
+		}
 	}
 
 	this.getAdjacentSquares = function(){

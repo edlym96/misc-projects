@@ -105,5 +105,5 @@ function clicked(index) {
 
 function displayScore(){
   fill(255,255,255);
-  text("Mines Remaining: "+mineCount,windowWidth/2-minefieldWidth/4,windowHeight/2-minefieldHeight/2*20-30);
+  text("Mines Remaining: "+mineCount,windowWidth/2-minefieldWidth,windowHeight/2-minefieldHeight/2*20-30);
 }
