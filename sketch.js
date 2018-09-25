@@ -1,8 +1,9 @@
 
 const NUM_DOTS = 80;
 const LINK_THRESHOLD = 200;
-const mineCount=99;
-
+var mineCount=99;
+var minefieldWidth=30;
+var minefieldHeight=16;
 var minefield = [];
 var mines=[];
 var gameOver=false;
@@ -39,7 +40,7 @@ function draw() {
       minefield[i].displayGameOver();
     }
   }
-
+  displayScore();
 }
 
 
@@ -56,6 +57,7 @@ function mousePressed(){
           }
         }else{
           minefield[i].hasFlag=!minefield[i].hasFlag;
+          minefield[i].hasFlag ? mineCount-- : mineCount++;
         }
       }
     }
@@ -99,4 +101,9 @@ function clicked(index) {
       }
     }
   }
+}
+
+function displayScore(){
+  fill(255,255,255);
+  text("Score: "+mineCount,windowWidth/2-minefieldWidth/4,windowHeight/2-minefieldHeight/2*20-30);
 }
