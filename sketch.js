@@ -39,10 +39,13 @@ function draw() {
   }
 }
 
-function mousePressed(){
+function mouseClicked(){
   for (var i=0;i<minefield.length;i++){
-    minefield[i].clicked;
+    if(mouseX>=minefield[i].xpos*minefield[i].len && mouseX<=minefield[i].xpos*minefield[i].len+minefield[i].len && mouseY>=minefield[i].ypos*minefield[i].len && mouseY<=minefield[i].ypos*minefield[i].len+minefield[i].len){
+      clicked(i);
+    }
   }
+  console.log(mouseX,mouseY);
 }
 
 function getRandom(arr, n) {
@@ -68,4 +71,13 @@ function getMineNumber(arr) {
     }
   }
   return count
+}
+
+function clicked(index) {
+  minefield[index].isPressed=true;
+  if(minefield[index].number == 0){
+    for(var i=0;i<minefield[index].adjacentSquares.length;i++){
+      console.log(minefield[index].adjacentSquares[i]);
+    }
+  }
 }
