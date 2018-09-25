@@ -35,14 +35,18 @@ function draw() {
   fill(211,211,211);
   for (var i=0;i<minefield.length;i++){
     minefield[i].display();
+    if(gameOver){
+      minefield[i].displayGameOver();
+    }
   }
+
 }
 
 
 function mousePressed(){
   if(!gameOver){
     for (var i=0;i<minefield.length;i++){
-      if(mouseX>=minefield[i].xpos*minefield[i].len && mouseX<=minefield[i].xpos*minefield[i].len+minefield[i].len && mouseY>=minefield[i].ypos*minefield[i].len && mouseY<=minefield[i].ypos*minefield[i].len+minefield[i].len){
+      if(mouseX>=minefield[i].startingX+minefield[i].xpos*minefield[i].len && mouseX<=minefield[i].startingX+minefield[i].xpos*minefield[i].len+minefield[i].len && mouseY>=minefield[i].startingY+minefield[i].ypos*minefield[i].len && mouseY<=minefield[i].startingY+minefield[i].ypos*minefield[i].len+minefield[i].len){
         if(mouseButton === LEFT){
           if(!minefield[i].hasFlag){
             clicked(i);
