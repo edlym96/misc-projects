@@ -6,6 +6,7 @@ function square(xpos,ypos){
 	this.isPressed=false;
 	this.number=0;
 	this.adjacentSquares=[];
+	this.hasFlag=false
 
 	this.display = function(){
 		if(this.isPressed){
@@ -13,14 +14,22 @@ function square(xpos,ypos){
 				fill(169,169,169);
 				rect(this.xpos*this.len,this.ypos*this.len,this.len,this.len);
 				fill(0, 102, 153);
+				textSize(14);
 				text(this.number, this.xpos*this.len+this.len/3, this.ypos*this.len+2*this.len/3);
 			}else{
 				fill(237,41,57);
 				rect(this.xpos*this.len,this.ypos*this.len,this.len,this.len);
+				fill(50,50,50);
+				ellipse(this.xpos*this.len+this.len/2,this.ypos*this.len+this.len/2, this.len/2,this.len/2)
 			}
 		}else{
 			fill(211,211,211);
 			rect(this.xpos*this.len,this.ypos*this.len,this.len,this.len);
+			if(this.hasFlag){
+				textSize(14);
+				fill(237,41,57)
+				text("!", this.xpos*this.len+this.len/3, this.ypos*this.len+2*this.len/3);
+			}
 		}
 	}
 

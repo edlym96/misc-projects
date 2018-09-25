@@ -5,7 +5,7 @@ const mineCount=99;
 
 var minefield = [];
 var mines=[];
-
+var gameOver=false;
 function setup() {
   createCanvas(windowWidth, windowHeight);
   for(var i=0;i<30;i++){
@@ -30,7 +30,6 @@ function setup() {
     }
   }
 }
-
 function draw() {
   background(30);
   fill(211,211,211);
@@ -39,14 +38,26 @@ function draw() {
   }
 }
 
-function mouseClicked(){
-  for (var i=0;i<minefield.length;i++){
-    if(mouseX>=minefield[i].xpos*minefield[i].len && mouseX<=minefield[i].xpos*minefield[i].len+minefield[i].len && mouseY>=minefield[i].ypos*minefield[i].len && mouseY<=minefield[i].ypos*minefield[i].len+minefield[i].len){
-      clicked(i);
+
+function mousePressed(){
+  if(!gameOver){
+    for (var i=0;i<minefield.length;i++){
+      if(mouseX>=minefield[i].xpos*minefield[i].len && mouseX<=minefield[i].xpos*minefield[i].len+minefield[i].len && mouseY>=minefield[i].ypos*minefield[i].len && mouseY<=minefield[i].ypos*minefield[i].len+minefield[i].len){
+        if(mouseButton === LEFT){
+          if(!minefield[i].hasFlag){
+            clicked(i);
+            if(minefield[i].hasMine){
+              gameOver=true;
+            }
+          }
+        }else{
+          minefield[i].hasFlag=!minefield[i].hasFlag;
+        }
+      }
     }
   }
-  console.log(mouseX,mouseY);
 }
+
 
 function getRandom(arr, n) {
     var result = new Array(n),
