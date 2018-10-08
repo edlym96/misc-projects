@@ -45,5 +45,29 @@
 	/* FUNCTION TO GENERATE SHOP CLOSING TIMES FROM DAY OF THE WEEK */
 	int closing_time(Day day_of_the_week)
 	{
-		return 5;
+	  switch(day_of_the_week){
+	  case Sun: return 1;
+	  case Mon: return 6;
+	  case Tue: return 6;
+	  case Wed: return 8;
+	  case Thu: return 6;
+	  case Fri: return 6;
+	  case Sat: return 5;
+	  default: return 0;
+	  }
 	}
+
+
+void print_day(Day day_of_the_week, ostream& out_stream){
+  switch(day_of_the_week)
+    		{
+				case Sun: out_stream << "Sunday"; break;
+				case Mon: out_stream << "Monday"; break;
+				case Tue: out_stream << "Tuesday"; break;
+				case Wed: out_stream << "Wednesday"; break;
+				case Thu: out_stream << "Thursday"; break;
+				case Fri: out_stream << "Friday"; break;
+				case Sat: out_stream << "Saturday"; break;
+				default:	out_stream << "ERROR!";
+		}		  
+}
