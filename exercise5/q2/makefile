@@ -1,2 +1,2 @@
-pyramid: pyramid.cpp
-	g++ -Wall -g pyramid.cpp print_pyramid.cpp -o pyramid
+pyramid: pyramid.cpp print_pyramid.cpp
+	g++ -Wall -g print_pyramid.cpp pyramid.cpp -o pyramid
