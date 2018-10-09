@@ -12,6 +12,7 @@ void input_array(int list[], int n){
 }
 
 void display_array(int list[], int n){
+  cout.setf(ios::left);
   cout.width(15);
   cout << "index" << "element" << endl;
   for(int i=0;i<n;++i){
@@ -27,17 +28,18 @@ void copy_array(int list1[], int list2[], int n){
 }
 
 float average(int list[], int n){
-  int sum;
+  float sum=0;
   for(int i=0;i<n;++i){
-    sum+=list[i]
+    sum+=float(list[i]);
   }
-  return static_cast<float>(sum)/n;
+  return (sum/n);
 }
 
 float standard_deviation(int list[], int n){
-  float sum;
+  float sum=0;
+  
   for(int i=0;i<n;i++){
-    sum += pow(list[i]-average(list[], n),2);
+    sum += pow(float(list[i])-average(list, n),2);
   }
   return sqrt(sum/n);
 }
