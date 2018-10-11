@@ -20,14 +20,14 @@ int main(){
     for(int j=0;j<N;j++){
       cin >> matrix_1[i][j];
     }
-  }
+  }// TRY USING (WHILE(CIN>>X))
 
   cout << "INPUTS SECOND (2 X 2) MATRIC: " << endl;
   for(int i=0;i<N;++i){
     cout << "Type in " << R << " values for row " << i << " separated by spaces";
     for(int j=0;j<R;j++){
       cin >> matrix_2[i][j];
-    }
+    } 
   }
   
   cout << matrix_1[0][0] << "  " << matrix_1[0][1] << endl;
