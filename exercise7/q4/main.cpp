@@ -24,6 +24,12 @@ void add_after(Node_ptr &list, char a_word[], char word_after[]);
 
 void delete_node(Node_ptr &a_list, char a_word[]);
 
+void list_selection_sort(Node_ptr &a_list);
+
+void swap_words(char first[], char second[]);
+
+bool compare_string(char str_1[], char str_2[]);
+
 int main(){
   char a_word[MAX_WORD_LENGTH],new_word[MAX_WORD_LENGTH],del_word[MAX_WORD_LENGTH];
   Node_ptr my_list = NULL;
@@ -45,6 +51,10 @@ int main(){
   cin >> del_word;
   
   delete_node(my_list,del_word);
+
+  print_list(my_list);
+
+  list_selection_sort(my_list);
 
   print_list(my_list);
   
@@ -130,3 +140,44 @@ void delete_node(Node_ptr &a_list, char a_word[]){
   return;
 }
 
+void list_selection_sort(Node_ptr &a_list){
+  Node_ptr p = a_list;
+
+  while(p){
+    Node_ptr q = p->ptr_to_next_node, smallest_ptr = p;
+    while(q){
+      if(compare_string(q->word, smallest_ptr->word)){
+	smallest_ptr = q;
+      }
+      q=q->ptr_to_next_node;
+    }
+    if(smallest_ptr != p){
+      swap_words(p->word,smallest_ptr->word);
+    }
+    p=p->ptr_to_next_node;
+  }
+}
+
+void swap_words(char first[], char second[]){
+  char temp [MAX_WORD_LENGTH];
+  strcpy(temp,first);
+  strcpy(first, second);
+  strcpy(second,temp);
+}
+
+bool compare_string(char str_1[],char str_2[]){
+  int count=0;
+  while (str_1[count]!='\0'){
+    if(str_1[count]<str_2[count]){
+      return true;
+    }else if(str_1[count]>str_2[count]){
+      return false;
+    }
+    count++;
+  }
+  if (str_2[count]){
+    return true;
+  }else{
+    return false;
+  }
+}
