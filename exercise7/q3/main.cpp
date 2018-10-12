@@ -10,6 +10,7 @@ const int STRING_SIZE = 80;
 struct Node{
   char word [STRING_SIZE]; // a string
   Node *next; //pointer to next node
+  Node *prev; //pointer to previous node
 };
 
 //Create a pointer to a new node
@@ -18,6 +19,7 @@ Node *create_new_node(const char *contents){
   assert(new_node != NULL);
   strcpy(new_node ->word, contents); //initialise the node with tect contents
   new_node->next = NULL; //set the next node pointer to NULL
+  new_node->prev = NULL;
   return new_node;
 }
 
@@ -37,6 +39,7 @@ void add_to_front(Node *&front, Node *&rear, const char *word){
 
   //default case
   item->next = front;
+  front->prev = item;
   front = item;
 }
 
@@ -50,6 +53,7 @@ void add_to_rear(Node *&front, Node *&rear, const char *word){
 
   //default case
   rear->next = item;
+  item->prev = rear;
   rear=item;
 }
 
@@ -106,6 +110,8 @@ void add_sorted(Node *&front, Node *&rear, const char *new_word){
   Node *new_node = create_new_node(new_word);
 
   new_node->next = p;
+  new_node->prev = q;
+  p->prev = new_node;
   q->next = new_node;
 }
 
