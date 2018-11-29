@@ -64,3 +64,14 @@ int sem_close (int id)
     return -1;
   return 0;
 }
+
+void fill_array_random(vector<int> &arr){
+  srand((int)time(0));
+  for(vector<int>::size_type i = 0; i != arr.size(); ++i){
+    arr[i] = (rand()%10)+1;
+  }
+}
+
+Job::Job(){}
+
+Job::Job(int index, int dur):index(index+1), duration(dur){}

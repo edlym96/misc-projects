@@ -19,9 +19,13 @@
 # include <pthread.h>
 # include <ctype.h>
 # include <iostream>
+# include <vector>
 using namespace std;
 
-//# define SEM_KEY 0x50 // Change this number as needed
+# define SEM_KEY 1494 // Change this number as needed
+# define SEM_MUTEX 0
+# define SEM_FULL 1
+# define SEM_EMPTY 2
 
 union semun {
   int val;               /* used for SETVAL only */
@@ -30,8 +34,10 @@ union semun {
 };
 
 struct Job{
-  int job_index;
-  int job_duration;
+  int index;
+  int duration;
+  Job();
+  Job(int index, int dur);
 };
 
 int check_arg (char *);
@@ -40,3 +46,4 @@ int sem_init (int, int, int);
 void sem_wait (int, short unsigned int);
 void sem_signal (int, short unsigned int);
 int sem_close (int);
+void fill_array_random(vector<int> &arr);
