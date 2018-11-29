@@ -28,9 +28,8 @@ int main (int argc, char **argv)
   pthread_t producerid[no_of_producers];
   pthread_t consumerid[no_of_consumers];
   
-  vector<Job> circle_queue; // shared queue
-  circle_queue.resize(queue_size);
-
+  vector<Job*> circle_queue; // shared queue
+  circle_queue.resize(queue_size, nullptr);
   int queue_end = 0; //variables to keep track of queue position
   int queue_start = 0;
 
@@ -88,7 +87,14 @@ int main (int argc, char **argv)
   for(int i=0; i<no_of_producers; ++i){
     consumer_arg_array[i]->~Consumer_Arg();
   }
- 
+
+  for(vector<Job*>::size_type i=0; i!=circle_queue.size();++i){
+    if (circle_queue[i] != NULL){
+      circle_queue[i]->~Job();
+      circle_queue[i] = NULL;
+    }
+  }
+  
   sem_close(sem_id);
   return 0;
 }
@@ -98,20 +104,19 @@ void *producer (void *parameter)
   // TODO
   Producer_Arg* param = (Producer_Arg *)parameter;
   srand((int)time(0));
-  vector<Job>& queue_ref = *(param->queue);
+  vector<Job*>& queue_ref = *(param->queue);
   int& queue_end_ref = *(param->queue_end_pos);
   Job new_job;
   while(param->jobs_remaining>0){
-    new_job = Job(queue_end_ref, (rand()%10)+1);
     sem_wait(sem_id, SEM_FULL);
-    sem_wait(sem_id, SEM_MUTEX);    
-    queue_ref[queue_end_ref] = new_job;
-    cout << "Producer(" << param->id << "): " << "Job ID " << new_job.index << " Duration " << queue_ref[queue_end_ref].duration << endl;
+    sem_wait(sem_id, SEM_MUTEX);
+    queue_ref[queue_end_ref] = new Job(queue_end_ref, (rand()%10)+1);
+    cout << "Producer(" << param->id << "): " << "Job ID " << queue_ref[queue_end_ref]->index << " Duration " << queue_ref[queue_end_ref]->duration << endl;
+    //**return queue position to start of queue once out of range
+    if(++queue_end_ref > int(queue_ref.capacity()-1)) queue_end_ref=0;
     sem_signal(sem_id, SEM_MUTEX);
     sem_signal(sem_id, SEM_EMPTY);
     (param->jobs_remaining)--;
-    //**return queue position to start of queue once out of range
-    if(++queue_end_ref > int(queue_ref.capacity()-1)) queue_end_ref=0;
   }
   pthread_exit(0);
 }
@@ -120,15 +125,16 @@ void *consumer (void *id)
 {
     // TODO
   Consumer_Arg* param = (Consumer_Arg *)id;
-  vector<Job>& queue_ref = *(param->queue);
+  vector<Job*>& queue_ref = *(param->queue);
   int& queue_start_ref = *(param->queue_start_pos);
   Job current_job;
 
   while(1){
     sem_wait(sem_id, SEM_EMPTY);
     sem_wait(sem_id, SEM_MUTEX);
-    current_job = queue_ref[queue_start_ref];
-    queue_ref.erase(queue_ref.begin() + queue_start_ref);
+    current_job = *(queue_ref[queue_start_ref]);
+    queue_ref[queue_start_ref]->~Job();
+    queue_ref[queue_start_ref] = NULL;
     sem_signal(sem_id, SEM_MUTEX);
     sem_signal(sem_id, SEM_FULL);
     if(++queue_start_ref > int(queue_ref.capacity()-1)) queue_start_ref = 0;
