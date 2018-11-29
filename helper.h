@@ -22,7 +22,7 @@
 # include <vector>
 using namespace std;
 
-# define SEM_KEY 1494 // Change this number as needed
+# define SEM_KEY 1497 // Change this number as needed
 # define SEM_MUTEX 0
 # define SEM_FULL 1
 # define SEM_EMPTY 2
