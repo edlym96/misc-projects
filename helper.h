@@ -46,4 +46,3 @@ int sem_init (int, int, int);
 void sem_wait (int, short unsigned int);
 void sem_signal (int, short unsigned int);
 int sem_close (int);
-void fill_array_random(vector<int> &arr);
