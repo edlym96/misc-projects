@@ -48,22 +48,21 @@ struct Job{
 struct Arg{
   vector<Job*> *queue;
   int id;
-
+  Arg();
   Arg(vector<Job*>&queue, int id);
-  ~Arg();
 };
 
 struct Consumer_Arg : public Arg{
   int *queue_start_pos;
+  Consumer_Arg();
   Consumer_Arg(vector<Job*>&queue,int &start_pos,int id);
-  ~Consumer_Arg();
 };
 
 struct Producer_Arg : public Arg{
   int *queue_end_pos;
   int jobs_remaining;
+  Producer_Arg();
   Producer_Arg(vector<Job*>&queue, int &end_pos,int id, int job_total);
-  ~Producer_Arg();
 };
 
 int check_arg (char *);

@@ -77,21 +77,12 @@ void exit_function(){
   sem_close(sem_id);
 }
 
+Arg::Arg(){};
 Arg::Arg(vector<Job*>&queue, int id):queue(&queue), id(id){};
 
-Arg::~Arg(){
-  cout << "Argument destructor called" << endl;
-}
-
+Consumer_Arg::Consumer_Arg(){};
 Consumer_Arg::Consumer_Arg(vector<Job*>&queue,int &start_pos,int id):Arg(queue, id), queue_start_pos(&start_pos){};
 
-Consumer_Arg::~Consumer_Arg(){
-  cout << "Consumer Argument destructor called" << endl;
-}
-
+Producer_Arg::Producer_Arg(){};
 Producer_Arg::Producer_Arg(vector<Job*>&queue, int &end_pos,int id, int job_total): Arg(queue, id), queue_end_pos(&end_pos), jobs_remaining(job_total){};
-
-Producer_Arg::~Producer_Arg(){
-  cout << "Producer Argument destructor called" << endl;
-}
 

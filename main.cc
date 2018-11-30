@@ -21,31 +21,37 @@ int main (int argc, char **argv)
 
   key_t sem_key = SEM_KEY;
   //  int parameter = 5;
-  int queue_size = atoi(argv[1]);
-  int no_of_jobs = atoi(argv[2]);
-  int no_of_producers = atoi(argv[3]);
-  int no_of_consumers = atoi(argv[4]);
+  int queue_size = check_arg(argv[1]);
+  int no_of_jobs = check_arg(argv[2]);
+  int no_of_producers = check_arg(argv[3]);
+  int no_of_consumers = check_arg(argv[4]);
+
+  if(queue_size <0 || no_of_jobs < 0 || no_of_producers < 0 || no_of_consumers < 0){
+    cerr << "invalid input arguments" << endl;
+    return 0;
+  }
+  
   pthread_t producerid[no_of_producers];
   pthread_t consumerid[no_of_consumers];
-  
+
+  //**Initialise shared data structures for producers/consumers
   vector<Job*> circle_queue; // shared queue
   circle_queue.resize(queue_size, nullptr);
   int queue_end = 0; //variables to keep track of queue position
   int queue_start = 0;
 
-  //Consider changing this to statically allocated to remove need for explicit destructors
-  Producer_Arg* producer_arg_array[no_of_producers];
+  Producer_Arg producer_arg_array[no_of_producers];
   //**Create threads for all producers
   for(int i=0; i< no_of_producers; ++i){
-    producer_arg_array[i] = new Producer_Arg(circle_queue, queue_end, i+1, no_of_jobs);
-    pthread_create(&producerid[i], NULL, producer, (void *)producer_arg_array[i]);
+    producer_arg_array[i] = Producer_Arg(circle_queue, queue_end, i+1, no_of_jobs);
+    pthread_create(&producerid[i], NULL, producer, (void *)&producer_arg_array[i]);
   }
 
-  Consumer_Arg* consumer_arg_array[no_of_consumers];
+  Consumer_Arg consumer_arg_array[no_of_consumers];
   //**Create threads for all consumers
   for(int i=0; i< no_of_consumers; ++i){
-    consumer_arg_array[i] = new Consumer_Arg(circle_queue, queue_start,i+1);
-    pthread_create(&consumerid[i], NULL, consumer, (void *)consumer_arg_array[i]);
+    consumer_arg_array[i] = Consumer_Arg(circle_queue, queue_start,i+1);
+    pthread_create(&consumerid[i], NULL, consumer, (void *)&consumer_arg_array[i]);
   }
 
   sem_id = sem_create(sem_key, NO_OF_SEMAPHORES);
@@ -79,15 +85,15 @@ int main (int argc, char **argv)
       exit(EXIT_FAILURE);
     }
   }
-
+  /*
   for(int i=0; i<no_of_producers; ++i){
     producer_arg_array[i]->~Producer_Arg();
   }
-
+  
   for(int i=0; i<no_of_producers; ++i){
     consumer_arg_array[i]->~Consumer_Arg();
   }
-
+  */
   for(vector<Job*>::size_type i=0; i!=circle_queue.size();++i){
     if (circle_queue[i] != NULL){
       circle_queue[i]->~Job();
@@ -106,18 +112,23 @@ void *producer (void *parameter)
   srand((int)time(0));
   vector<Job*>& queue_ref = *(param->queue);
   int& queue_end_ref = *(param->queue_end_pos);
-  Job new_job;
   while(param->jobs_remaining>0){
     sem_wait(sem_id, SEM_FULL);
     sem_wait(sem_id, SEM_MUTEX);
+    //**BEGIN CRITICAL REGION
     queue_ref[queue_end_ref] = new Job(queue_end_ref, (rand()%10)+1);
     cout << "Producer(" << param->id << "): " << "Job ID " << queue_ref[queue_end_ref]->index << " Duration " << queue_ref[queue_end_ref]->duration << endl;
+
     //**return queue position to start of queue once out of range
     if(++queue_end_ref > int(queue_ref.capacity()-1)) queue_end_ref=0;
+
+    //**END CRITICAL REGION
     sem_signal(sem_id, SEM_MUTEX);
     sem_signal(sem_id, SEM_EMPTY);
     (param->jobs_remaining)--;
+    sleep(1);
   }
+  cout << "Producer(" << param->id << "): No more jobs to generate" << endl;
   pthread_exit(0);
 }
 
@@ -132,14 +143,17 @@ void *consumer (void *id)
   while(1){
     sem_wait(sem_id, SEM_EMPTY);
     sem_wait(sem_id, SEM_MUTEX);
+    //**BEGIN CRITICAL REGION
     current_job = *(queue_ref[queue_start_ref]);
     queue_ref[queue_start_ref]->~Job();
     queue_ref[queue_start_ref] = NULL;
+    if(++queue_start_ref > int(queue_ref.capacity()-1)) queue_start_ref = 0;
+    //**END CRITICAL REGION
     sem_signal(sem_id, SEM_MUTEX);
     sem_signal(sem_id, SEM_FULL);
-    if(++queue_start_ref > int(queue_ref.capacity()-1)) queue_start_ref = 0;
     cout << "Consumer(" << param->id << "): " << "Job ID " << current_job.index << " executing sleep duration " << current_job.duration << endl;
     sleep(current_job.duration);
+    cout << "Consumer(" << param->id << "): " << "Job ID " << current_job.index << " completed" << endl;
   }
   
   pthread_exit (0);
