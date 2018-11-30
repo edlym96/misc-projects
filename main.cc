@@ -57,7 +57,7 @@ int main (int argc, char **argv)
   circle_queue.resize(queue_size, nullptr);
   int queue_end = 0; //variables to keep track of queue position
   int queue_start = 0;
-
+  
   Producer_Arg producer_arg_array[no_of_producers];
   //**Create arguments for all producers
   for(int i=0; i< no_of_producers; ++i){
@@ -132,9 +132,12 @@ void *producer (void *parameter)
     sem_signal(sem_id, SEM_MUTEX);
     sem_signal(sem_id, SEM_EMPTY);
     (param->jobs_remaining)--;
-    sleep((rand()%5)+1);
+    if(param->jobs_remaining == 0){
+      cout << "Producer(" << param->id << "): No more jobs to generate" << endl;
+    }else{
+      sleep((rand()%5)+1);
+    }
   }
-  cout << "Producer(" << param->id << "): No more jobs to generate" << endl;
   pthread_exit(0);
 }
 
@@ -147,7 +150,10 @@ void *consumer (void *id)
   Job current_job;
 
   while(1){
-    sem_wait(sem_id, SEM_EMPTY);
+    if(sem_down(sem_id, SEM_EMPTY, TIMEOUT_DURATION) < 0){
+      cout << "Consumer(" << param->id << "): " << "No more jobs left." << endl;
+      pthread_exit(0);
+    }
     sem_wait(sem_id, SEM_MUTEX);
     //**BEGIN CRITICAL REGION
     current_job = *(queue_ref[queue_start_ref]);
@@ -161,7 +167,6 @@ void *consumer (void *id)
     sleep(current_job.duration);
     cout << "Consumer(" << param->id << "): " << "Job ID " << current_job.index << " completed" << endl;
   }
-  
+  cout << "outside the while loop" << endl;
   pthread_exit (0);
-
 }

@@ -28,6 +28,7 @@ using namespace std;
 # define SEM_MUTEX 0
 # define SEM_FULL 1
 # define SEM_EMPTY 2
+# define TIMEOUT_DURATION 5
 
 extern int sem_id;
 
@@ -69,6 +70,7 @@ int check_arg (char *);
 int sem_create (key_t, int);
 int sem_init (int, int, int);
 void sem_wait (int, short unsigned int);
+int sem_down(int id, short unsigned int num, int timeout_value);
 void sem_signal (int, short unsigned int);
 int sem_close (int);
 void signal_handler(int signum);
