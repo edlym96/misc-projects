@@ -63,9 +63,8 @@ int sem_down(int id, short unsigned int num, int timeout_value){
     {num, -1, SEM_UNDO}
   };
 
-  time_t timeout_time = timeout_value;
   struct timespec timeout{
-    timeout_time,
+    (time_t) timeout_value,
     0,
   };
 
@@ -84,6 +83,20 @@ Job::Job(){};
 Job::Job(int index, int dur):index(index), duration(dur){}
 Job::~Job(){};
 
+Circle_Queue::Circle_Queue(int size):queue{}, queue_start(0), queue_end(0){
+  queue.resize(size, nullptr);
+}
+
+Circle_Queue::~Circle_Queue(){
+    //** queue clean up after funciton finishes
+  for(vector<Job*>::size_type i=0; i!=queue.size();++i){
+    if (queue[i] != NULL){
+      queue[i]->~Job();
+      queue[i] = NULL;
+    }
+  }
+}
+
 void signal_handler(int signum){
   exit(signum);
 }
@@ -92,12 +105,9 @@ void exit_function(){
   sem_close(sem_id);
 }
 
-Arg::Arg(){};
-Arg::Arg(vector<Job*>&queue, int id):queue(&queue), id(id){};
-
 Consumer_Arg::Consumer_Arg(){};
-Consumer_Arg::Consumer_Arg(vector<Job*>&queue,int &start_pos,int id):Arg(queue, id), queue_start_pos(&start_pos){};
+Consumer_Arg::Consumer_Arg(Circle_Queue& queue,int id):circle_queue(& queue), id(id){};
 
 Producer_Arg::Producer_Arg(){};
-Producer_Arg::Producer_Arg(vector<Job*>&queue, int &end_pos,int id, int job_total): Arg(queue, id), queue_end_pos(&end_pos), jobs_remaining(job_total){};
+Producer_Arg::Producer_Arg(Circle_Queue& queue, int id, int job_total): Consumer_Arg(queue, id), jobs_remaining(job_total){};
 

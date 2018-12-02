@@ -28,7 +28,7 @@ using namespace std;
 # define SEM_MUTEX 0
 # define SEM_FULL 1
 # define SEM_EMPTY 2
-# define TIMEOUT_DURATION 5
+# define TIMEOUT_DURATION 20
 
 extern int sem_id;
 
@@ -38,6 +38,7 @@ union semun {
   ushort *array;         /* used for GETALL and SETALL */
 };
 
+//Data Structure for Jobs
 struct Job{
   int index;
   int duration;
@@ -46,24 +47,28 @@ struct Job{
   ~Job();
 };
 
-struct Arg{
-  vector<Job*> *queue;
+//Data structure for circle queue
+struct Circle_Queue{
+  vector<Job*> queue;
+  int queue_start;
+  int queue_end;
+  Circle_Queue(int size);
+  ~Circle_Queue();
+};
+
+//Data structure for argument to be passed to consumer function
+struct Consumer_Arg{
+  Circle_Queue* circle_queue;
   int id;
-  Arg();
-  Arg(vector<Job*>&queue, int id);
-};
-
-struct Consumer_Arg : public Arg{
-  int *queue_start_pos;
   Consumer_Arg();
-  Consumer_Arg(vector<Job*>&queue,int &start_pos,int id);
+  Consumer_Arg(Circle_Queue& queue, int id);
 };
 
-struct Producer_Arg : public Arg{
-  int *queue_end_pos;
+//Data structure for argument to be passed to producer function
+struct Producer_Arg : public Consumer_Arg{
   int jobs_remaining;
   Producer_Arg();
-  Producer_Arg(vector<Job*>&queue, int &end_pos,int id, int job_total);
+  Producer_Arg(Circle_Queue& queue, int id, int job_total);
 };
 
 int check_arg (char *);
