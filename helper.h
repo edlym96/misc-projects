@@ -52,6 +52,8 @@ struct Circle_Queue{
   vector<Job*> queue;
   int queue_start;
   int queue_end;
+  Job pop();
+  void push(Job* new_job);
   Circle_Queue(int size);
   ~Circle_Queue();
 };

@@ -28,7 +28,7 @@ int main (int argc, char **argv)
   int no_of_consumers = check_arg(argv[4]);
 
   //** Catch any errors wit arguments
-  if(queue_size <0 || no_of_jobs < 0 || no_of_producers < 0 || no_of_consumers < 0){
+  if(queue_size <=0 || no_of_jobs < 0 || no_of_producers < 0 || no_of_consumers < 0){
     cerr << "invalid input arguments" << endl;
     return 0;
   }
@@ -106,21 +106,24 @@ void *producer (void *parameter)
 {
 
   Producer_Arg* param = (Producer_Arg *)parameter;
-  vector<Job*>& queue_ref = (param->circle_queue)->queue;
   int& queue_end_ref = (param->circle_queue)->queue_end;
+  Job* new_job;
+
+  //**Edge Case
+  if(param->jobs_remaining == 0){
+    cout << "Producer(" << param->id << "): No more jobs to generate" << endl;
+  }
+  
   while(param->jobs_remaining>0){
     if(sem_down(sem_id, SEM_FULL, TIMEOUT_DURATION) < 0){
-      cout << "Queue full, no more jobs" << endl;
+      cout << "Producer(" << param->id << "): Queue full, no more jobs" << endl;
       pthread_exit(0);
     }
     sem_wait(sem_id, SEM_MUTEX);
     //**BEGIN CRITICAL REGION
-    queue_ref[queue_end_ref] = new Job(queue_end_ref+1, (rand()%10)+1);
-    cerr << "Producer(" << param->id << "): " << "Job ID " << queue_ref[queue_end_ref]->index << " Duration " << queue_ref[queue_end_ref]->duration << endl;
-    
-    //**return queue position to start of queue once out of range
-    if(++queue_end_ref > int(queue_ref.capacity()-1)) queue_end_ref=0;
-    
+    new_job = new Job(queue_end_ref+1, (rand()%10)+1);
+    (param->circle_queue)->push(new_job);
+    cout << "Producer(" << param->id << "): " << "Job ID " << new_job->index << " Duration " << new_job->duration << endl;
     //**END CRITICAL REGION
     sem_signal(sem_id, SEM_MUTEX);
     sem_signal(sem_id, SEM_EMPTY);
@@ -131,14 +134,13 @@ void *producer (void *parameter)
       sleep((rand()%5));
     }
   }
+  new_job = NULL; //Deallocate new job to remove dangling pointer
   pthread_exit(0);
 }
 
 void *consumer (void *id) 
 {
   Consumer_Arg* param = (Consumer_Arg *)id;
-  vector<Job*>& queue_ref = (param->circle_queue)->queue;
-  int& queue_start_ref = (param->circle_queue)->queue_start;
   Job current_job;
 
   while(1){
@@ -148,11 +150,9 @@ void *consumer (void *id)
     }
     sem_wait(sem_id, SEM_MUTEX);
     //**BEGIN CRITICAL REGION
-    current_job = *(queue_ref[queue_start_ref]);
-    queue_ref[queue_start_ref]->~Job();
-    queue_ref[queue_start_ref] = NULL;
+    current_job = (param->circle_queue)->pop();
     cout << "Consumer(" << param->id << "): " << "Job ID " << current_job.index << " executing sleep duration " << current_job.duration << endl;
-    if(++queue_start_ref > int(queue_ref.capacity()-1)) queue_start_ref = 0;
+ 
     //**END CRITICAL REGION
     sem_signal(sem_id, SEM_MUTEX);
     sem_signal(sem_id, SEM_FULL);

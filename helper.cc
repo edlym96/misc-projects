@@ -83,12 +83,25 @@ Job::Job(){};
 Job::Job(int index, int dur):index(index), duration(dur){}
 Job::~Job(){};
 
+Job Circle_Queue::pop(){
+  Job temp = *(queue[queue_start]);
+  queue[queue_start]->~Job();
+  queue[queue_start] = NULL;
+  if(++queue_start > int(queue.capacity()-1)) queue_start = 0;
+  return temp;
+}
+
+void Circle_Queue::push(Job* new_job){
+  queue[queue_end] = new_job;
+  if(++queue_end > int(queue.capacity()-1)) queue_end = 0;
+}
+
 Circle_Queue::Circle_Queue(int size):queue{}, queue_start(0), queue_end(0){
   queue.resize(size, nullptr);
 }
 
 Circle_Queue::~Circle_Queue(){
-    //** queue clean up after funciton finishes
+  //** queue clean up if exitted abnormally
   for(vector<Job*>::size_type i=0; i!=queue.size();++i){
     if (queue[i] != NULL){
       queue[i]->~Job();
