@@ -116,7 +116,7 @@ void *producer (void *parameter)
   
   while(param->jobs_remaining>0){
     if(sem_down(sem_id, SEM_FULL, TIMEOUT_DURATION) < 0){
-      cout << "Producer(" << param->id << "): Queue full, no more jobs" << endl;
+      cout << "Producer(" << param->id << "): Queue is full. Semaphore operation has timed out" << endl;
       pthread_exit(0);
     }
     sem_wait(sem_id, SEM_MUTEX);

@@ -68,7 +68,12 @@ int sem_down(int id, short unsigned int num, int timeout_value){
     0,
   };
 
-  if(semtimedop(id,op,1,&timeout) < 0) return -1;
+  if(semtimedop(id,op,1,&timeout) < 0) {
+    if(errno != EAGAIN){
+      cerr << "Error executing semaphore instruction" << endl;
+    }
+    return -1;
+  }
   return 0;
 }
 
