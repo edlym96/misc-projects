@@ -22,6 +22,7 @@
 # include <iostream>
 # include <vector>
 # include <csignal>
+# include <string>
 using namespace std;
 
 # define SEM_KEY 1497 // Change this number as needed

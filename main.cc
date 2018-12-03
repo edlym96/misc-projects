@@ -14,6 +14,14 @@ int flag = 0;
 
 int main (int argc, char **argv)
 {
+  //**Delete existing semaphore set if it exists
+  /*
+  string s("ipcrm -S ");
+  s+=to_string(SEM_KEY);
+  const char* cmd = s.c_str();
+  system(cmd);
+  */
+  
   srand(time(0));
   if(argc != 5){
     cout << "Incorrect number of input parameters!" << endl;
@@ -27,9 +35,9 @@ int main (int argc, char **argv)
   int no_of_producers = check_arg(argv[3]);
   int no_of_consumers = check_arg(argv[4]);
 
-  //** Catch any errors wit arguments
+  //** Catch any errors with arguments
   if(queue_size <=0 || no_of_jobs < 0 || no_of_producers < 0 || no_of_consumers < 0){
-    cerr << "invalid input arguments" << endl;
+    cerr << "Invalid input arguments" << endl;
     return 0;
   }
 
@@ -40,17 +48,24 @@ int main (int argc, char **argv)
   signal(SIGHUP, signal_handler);
   signal(SIGABRT, signal_handler);
   signal(SIGINT, signal_handler);
-  signal(SIGTSTP, signal_handler);
+  signal(SIGILL, signal_handler);
   signal(SIGTERM, signal_handler);
-  signal(SIGKILL, signal_handler);
   signal(SIGSEGV, signal_handler);
   atexit(exit_function);
 
   //** Initialise semaphores
-  cout << sem_id << endl;
-  if(sem_init(sem_id, SEM_MUTEX, 1)) exit(EXIT_FAILURE);
-  if(sem_init(sem_id, SEM_FULL, queue_size)) exit(EXIT_FAILURE);
-  if(sem_init(sem_id, SEM_EMPTY, 0)) exit(EXIT_FAILURE);
+  if(sem_init(sem_id, SEM_MUTEX, 1)) {
+    cout << "Failure initialising MUTEX semaphore" << endl;
+    exit(EXIT_FAILURE);
+  }
+  if(sem_init(sem_id, SEM_FULL, queue_size)){
+    cout << "Failure initialising FULL semaphore" << endl;
+    exit(EXIT_FAILURE);
+  }
+  if(sem_init(sem_id, SEM_EMPTY, 0)){
+    cout << "Failure initialising EMPTY semaphore" << endl;
+    exit(EXIT_FAILURE);
+  }
 
   //** Create array for threads
   pthread_t producerid[no_of_producers];
@@ -61,24 +76,25 @@ int main (int argc, char **argv)
 
   //**Create arguments for all producers
   Producer_Arg producer_arg_array[no_of_producers];
-  for(int i=0; i< no_of_producers; ++i){
-    producer_arg_array[i] = Producer_Arg(shared_queue, i+1, no_of_jobs);
-  }
-
   //**Create arguments for all consumers
   Consumer_Arg consumer_arg_array[no_of_consumers];
-  for(int i=0; i< no_of_consumers; ++i){
-    consumer_arg_array[i] = Consumer_Arg(shared_queue, i+1);
-  }
 
   //** Create threads for all producers
   for(int i=0; i< no_of_producers; ++i){
-    pthread_create(&producerid[i], NULL, producer, (void *)&producer_arg_array[i]);
+    producer_arg_array[i] = Producer_Arg(shared_queue, i+1, no_of_jobs);
+    if(pthread_create(&producerid[i], NULL, producer, (void *)&producer_arg_array[i])){
+      cout << "Error created producer thread " << i+1 << endl;
+      exit(EXIT_FAILURE);
+    }
   }
 
   //** Create threads for all consumers
   for(int i=0; i< no_of_consumers; ++i){
-    pthread_create(&consumerid[i], NULL, consumer, (void *)&consumer_arg_array[i]);
+    consumer_arg_array[i] = Consumer_Arg(shared_queue, i+1);
+    if(pthread_create(&consumerid[i], NULL, consumer, (void *)&consumer_arg_array[i])){
+      cout << "Error created consumer thread " << i+1 << endl;
+      exit(EXIT_FAILURE);
+    }
   }
 
   //** Join producers
