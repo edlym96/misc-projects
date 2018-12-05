@@ -109,7 +109,7 @@ Circle_Queue::~Circle_Queue(){
   //** queue clean up if exitted abnormally
   for(vector<Job*>::size_type i=0; i!=queue.size();++i){
     if (queue[i] != NULL){
-      queue[i]->~Job();
+      delete queue[i];
       queue[i] = NULL;
     }
   }

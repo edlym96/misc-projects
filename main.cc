@@ -175,6 +175,5 @@ void *consumer (void *id)
     sleep(current_job.duration);
     cout << "Consumer(" << param->id << "): " << "Job ID " << current_job.index << " completed" << endl;
   }
-  cout << "outside the while loop" << endl;
   pthread_exit (0);
 }
