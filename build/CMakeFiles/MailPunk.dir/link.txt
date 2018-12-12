@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/MailPunk.dir/MailPunk.cpp.o CMakeFiles/MailPunk.dir/imap.cpp.o CMakeFiles/MailPunk.dir/UI.cpp.o  -o MailPunk  -L/homes/eyl215/MailPunk/build/deps/lib -Wl,-rpath,/homes/eyl215/MailPunk/build/deps/lib -letpan -lfinal 

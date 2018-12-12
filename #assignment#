@@ -1,0 +1,4 @@
+     for(cur2 = clist_begin(msg_att->att_list); cur != NULL; cur =
+     clist_next(cur)){
+                     ^
+		     1;5202;0c

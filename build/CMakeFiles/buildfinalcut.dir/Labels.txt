@@ -1,0 +1,13 @@
+# Target labels
+ buildfinalcut
+# Source files and their labels
+/homes/eyl215/MailPunk/build/CMakeFiles/buildfinalcut
+/homes/eyl215/MailPunk/build/CMakeFiles/buildfinalcut.rule
+/homes/eyl215/MailPunk/build/CMakeFiles/buildfinalcut-complete.rule
+/homes/eyl215/MailPunk/build/buildfinalcut-prefix/src/buildfinalcut-stamp/buildfinalcut-install.rule
+/homes/eyl215/MailPunk/build/buildfinalcut-prefix/src/buildfinalcut-stamp/buildfinalcut-mkdir.rule
+/homes/eyl215/MailPunk/build/buildfinalcut-prefix/src/buildfinalcut-stamp/buildfinalcut-download.rule
+/homes/eyl215/MailPunk/build/buildfinalcut-prefix/src/buildfinalcut-stamp/buildfinalcut-update.rule
+/homes/eyl215/MailPunk/build/buildfinalcut-prefix/src/buildfinalcut-stamp/buildfinalcut-patch.rule
+/homes/eyl215/MailPunk/build/buildfinalcut-prefix/src/buildfinalcut-stamp/buildfinalcut-configure.rule
+/homes/eyl215/MailPunk/build/buildfinalcut-prefix/src/buildfinalcut-stamp/buildfinalcut-build.rule
