@@ -169,16 +169,17 @@ Message** Session::getMessages(){
   fetch_type = mailimap_fetch_type_new_fetch_att_list_empty();
   fetch_att_uid = mailimap_fetch_att_new_uid();
   mailimap_fetch_type_new_fetch_att_list_add(fetch_type, fetch_att_uid);
-  
-  try{
-  error = mailimap_fetch(imap, set, fetch_type, &fetch_result);
-  check_error(error, "could not fetch");
-  }catch(const std::runtime_error& err){
-    msg_list = NULL;
-    return msg_list;
-  }
 
   number_of_messages = 0;
+
+
+  try{error = mailimap_fetch(imap, set, fetch_type, &fetch_result);
+  check_error(error, "could not fetch");
+  }catch(const std::runtime_error& err){
+    msg_list = new Message*[1];
+    msg_list[0] = NULL;
+    return msg_list;
+  }
   
   for(cur = clist_begin(fetch_result); cur != NULL; cur = clist_next(cur)){
     ++number_of_messages;
