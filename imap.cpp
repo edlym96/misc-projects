@@ -195,21 +195,20 @@ Message** Session::getMessages(){
   fetch_att_uid = mailimap_fetch_att_new_uid();//Create fetch uid att
   mailimap_fetch_type_new_fetch_att_list_add(fetch_type, fetch_att_uid);//Add the fetch att to the fetch list
 
-  number_of_messages = 0; //Reset number of messages
+  //number_of_messages = 0; //Reset number of messages
 
   //*Try to fetch and handle the exception when mailbox is empty
   try{error = mailimap_fetch(imap, set, fetch_type, &fetch_result);
   check_error(error, "could not fetch");
   }catch(const std::runtime_error& err){
+    //*Create message array populated with a single NULL for empty mailboxes
     msg_list = new Message*[1];
     msg_list[0] = NULL;
     return msg_list;
   }
 
-  //*For loop to get number of messages in lsit
-  for(cur = clist_begin(fetch_result); cur != NULL; cur = clist_next(cur)){
-    ++number_of_messages;
-  }
+  //**Get the number of messages from a clist count
+  number_of_messages = clist_count(fetch_result);
 
   //*Create msg_list array
   msg_list = new Message*[number_of_messages+1];
