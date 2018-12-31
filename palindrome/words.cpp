@@ -51,3 +51,33 @@ bool palindrome(const char sentence[]){
   reverse(sentence, reverse_sentence);
   return compare(sentence, reverse_sentence);
 }
+
+bool anagram(const char str1[], const char str2[]){
+  char sorted1[strlen(str1)+1];
+  char sorted2[strlen(str2)+1];
+  bubble_sort(str1, sorted1);
+  bubble_sort(str2, sorted2);
+  return compare(sorted1, sorted2);
+}
+
+void bubble_sort(const char string[], char sorted[]){
+  strcpy(sorted, string);
+  bool has_sorted;
+  do{
+    has_sorted = false;
+    for(int i=0; i < strlen(sorted)-1; ++i){
+      if(isalpha(sorted[i+1])){
+	if(!isalpha(sorted[i]) || (isalpha(sorted[i]) && toupper(sorted[i+1])>toupper(sorted[i]))){
+	  swap(sorted, i, i+1);
+	  has_sorted = true;
+	}
+      }
+    }
+  }while(has_sorted);
+}
+
+void swap(char string[], int index1, int index2){
+  char temp = string[index1];
+  string[index1] = string[index2];
+  string[index2] = temp;
+}
