@@ -25,7 +25,7 @@ int main() {
   cout << "the same" << endl << "  (ignoring punctuation and case)" << endl << endl;
 
   /*** QUESTION 3 ***/
-  /*
+  
   cout << "The string 'rotor' is ";
   if (!palindrome("rotor"))
     cout << "NOT ";

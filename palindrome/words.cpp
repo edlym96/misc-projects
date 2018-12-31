@@ -44,3 +44,10 @@ bool compare(const char str1[], const char str2[]){
   }
   return false;
 }
+
+bool palindrome(const char sentence[]){
+  int length = strlen(sentence);
+  char reverse_sentence[length];
+  reverse(sentence, reverse_sentence);
+  return compare(sentence, reverse_sentence);
+}
