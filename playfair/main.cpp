@@ -18,7 +18,7 @@ int main() {
   cout << "'" << prepared << "'." << endl << endl;
 
   // question 2  
-
+  
   cout << "====================== Question 2 ======================" << endl;
 
   char playfair[6][6];
@@ -31,7 +31,7 @@ int main() {
     cout << endl;
   }
   cout << endl;
-
+  
   // question 3
 
   cout << "====================== Question 3 ======================" << endl;
@@ -44,7 +44,8 @@ int main() {
   bigram(playfair,'N','9',out1,out2);
 
   cout << "The bigram 'N9' encodes as '" << out1 << out2 << "'" << endl << endl;
-
+  
+  
   // question 4
   cout << "====================== Question 4 ======================" << endl;
 
