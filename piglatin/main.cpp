@@ -27,7 +27,7 @@ int main() {
   cout << endl;
 
   /* QUESTION 2 */
-
+  
   cout << "====================== Question 2 ======================" << endl;
 
   char translated[100];
@@ -41,6 +41,9 @@ int main() {
   translateWord("Yellow", translated);
   cout << "In Pig Latin 'Yellow' is '" << translated << "'." << endl;
   cout << endl;
+   translateWord("!", translated);
+  cout << "In Pig Latin '!' is '" << translated << "'." << endl;
+  cout << endl;
 
   /* QUESTION 3 */
   
@@ -52,7 +55,7 @@ int main() {
   translateStream(input, cout);
   input.close();
   cout << endl;
-
+  
   return 0;
 }
 
