@@ -29,7 +29,7 @@ int main() {
   cout << endl;
 
   braille[0]='\0';
-
+  
   cout << "====================== Question 2 ======================" << endl << endl;
 
   encode("Hello!", braille);
@@ -39,7 +39,7 @@ int main() {
   cout << "The string 'S-Club7?' encoded in braille is:" << endl << braille << endl;
 
   cout << endl;
-
+  
   cout << "====================== Question 3 ======================" << endl << endl;
 
   print_braille("Hello!", cout);
@@ -49,6 +49,6 @@ int main() {
   print_braille("S-Club7?", cout);
 
   cout << endl;
-
+  
   return 0;
 }
