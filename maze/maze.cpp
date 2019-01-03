@@ -149,12 +149,22 @@ string find_path(char** maze, int height, int width, char start, char end){
 }
 
 bool recursive_find(char** maze, char previous_move, int height, int width, int row, int col, string& path, char end){
-
+  if(maze[row][col] == end){
+    return true;
+  }
   const char moveset[] = "NESW";
   int counter = 0;
+  int temp_row, temp_col;
+  temp_row = row;
+  temp_col = col;
   while((!attempt_move(moveset[counter], maze, height, width, row, col, path) || !recursive_find(maze, moveset[counter], height, width, row, col, path, end))){
+    ++counter;
+    row = temp_row;
+    col = temp_col;
     if(counter > 3){
       //Return position if recursive find is false
+      path.pop_back();
+      maze[row][col] = ' ';
       return false;
     }
   }
