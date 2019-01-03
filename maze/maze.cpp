@@ -2,8 +2,9 @@
 #include <iomanip>
 #include <fstream>
 #include <cassert>
+#include <string>
 #include <cstring>
-
+#include "maze.h"
 using namespace std;
 
 /* You are pre-supplied with the functions below. Add your own 
@@ -93,3 +94,112 @@ void print_maze(char **m, int height, int width) {
   }
 }
 
+bool find_marker(char ch, char** maze, int height, int width, int& row, int& col){
+  for(int i=0; i<height; ++i){
+    for(int j=0; j<width; ++j){
+      if(maze[i][j] == ch){
+	row = i;
+	col = j;
+	return true;
+      } 
+    }
+  }
+  row = -1;
+  col = -1;
+  return false;
+}
+
+bool valid_solution(const char* path, char** maze, int height, int width){
+  int pos_x, pos_y;
+  if(!find_marker('>', maze, height, width, pos_y, pos_x)){
+    return false;
+  }
+  while((maze[pos_y][pos_x] == '>' || maze[pos_y][pos_x] == ' ') && *path != '\0'){
+    if(*path == 'N'){
+      --pos_y;
+    }else if(*path == 'E'){
+      ++pos_x;
+    }else if(*path == 'S'){
+      ++pos_y;
+    }else if(*path == 'W'){
+      --pos_x;
+    }
+    ++path;
+  }
+  if(maze[pos_y][pos_x] == 'X'){
+    return true;
+  }else{
+    return false;
+  }
+}
+
+string find_path(char** maze, int height, int width, char start, char end){
+  int row, col;
+  string path;
+  char fake = ' ';
+  if(!find_marker(start, maze, height, width, row, col)){
+    return "NO SOLUTION";
+  }
+  maze[row][col] = '#';
+  if(recursive_find(maze, fake, height, width, row, col, path, end)){
+    return path; 
+  }else{
+    return "NO SOLUTION";
+  }
+}
+
+bool recursive_find(char** maze, char previous_move, int height, int width, int row, int col, string& path, char end){
+
+  const char moveset[] = "NESW";
+  int counter = 0;
+  while((!attempt_move(moveset[counter], maze, height, width, row, col, path) || !recursive_find(maze, moveset[counter], height, width, row, col, path, end))){
+    if(counter > 3){
+      //Return position if recursive find is false
+      return false;
+    }
+  }
+  return true;
+}
+
+bool attempt_move(char move, char** maze, int height, int width, int& row, int& col, string &path){
+  std:: cout << "location " << row << col << " move " << move << endl;
+  if(move == 'N'){
+    --row;
+  }else if(move == 'E'){
+    ++col;
+  }else if(move == 'S'){
+    ++row;
+  }else if(move == 'W'){
+    --col;
+  }
+  if(row >= height || row < 0 || col >= width || col <0){
+    if(move == 'N'){
+      ++row;
+    }else if(move == 'E'){
+      --col;
+    }else if(move == 'S'){
+      --row;
+    }else if(move == 'W'){
+      ++col;
+    } 
+    return false;
+  }
+  if(maze[row][col] != '+' && maze[row][col] != '-' && maze[row][col] != '|' && maze[row][col] != '#'){
+    path+=move;
+    if(maze[row][col] == ' '){
+      maze[row][col] = '#';
+    }
+    return true;
+  }else{
+    if(move == 'N'){
+      ++row;
+    }else if(move == 'E'){
+      --col;
+    }else if(move == 'S'){
+      --row;
+    }else if(move == 'W'){
+      ++col;
+    } 
+    return false;
+  }
+}

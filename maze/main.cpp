@@ -33,7 +33,7 @@ int main() {
   cout << "Finding the exit:" << endl;
   find_marker('X', maze, height, width, row, column);
   cout << "The exit is at row " << row << " column " << column << endl << endl;
-
+  
   cout << "====================== Question 2 ======================" << endl << endl;
 
   cout << "The move sequence 'EEEEESEENN' is ";
@@ -50,7 +50,7 @@ int main() {
   if (!valid_solution("ESSSSSSEEEEEEE", maze, height, width))
     cout << "NOT ";
   cout << "a solution to the maze" << endl << endl;
-
+  
   cout << "====================== Question 3 ======================" << endl << endl;
 
   /* an easy example with a known solution */
@@ -63,7 +63,7 @@ int main() {
 
   deallocate_2D_array(maze, height);
 
-  /* an impossible example - should return "no solution" */ 
+  /* an impossible example - should return "no solution" */
   maze = load_maze("simple.txt", height, width);
   assert(maze);
 
@@ -74,7 +74,7 @@ int main() {
   
   cout << "=================== Bonus Question =====================" << endl << endl;
 
-  /* find the path from the entrance to the middle of the Hatfield House maze */
+  /* find the path from the entrance to the middle of the Hatfield House maze 
   maze = load_maze("hatfield.txt", height, width);
   assert(maze);
 
@@ -91,7 +91,7 @@ int main() {
 
   deallocate_2D_array(maze, height);
 
-  /* find the path from the middle to the exit of the Hatfield House maze */
+  /* find the path from the middle to the exit of the Hatfield House maze 
   maze = load_maze("hatfield.txt", height, width);
   assert(maze);
 
@@ -103,7 +103,7 @@ int main() {
   cout << endl;
   
   deallocate_2D_array(maze, height);
-
+*/
   cout << "======================= The End ========================" << endl << endl;
 
   return 0;
