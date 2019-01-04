@@ -43,11 +43,12 @@ int main() {
   cout << count_words("Shall I compare thee to a Summer's day?") << " words" << endl;
 
   cout << endl;
-
+  
   // Question 2
   cout << "====================== Question 2 ======================" << endl << endl;
 
   char phonetics[512];
+
   find_phonetic_ending("DAY", phonetics);
   cout << "DAY has phonetic ending " << phonetics << endl;
 
@@ -67,7 +68,7 @@ int main() {
   cout << "PAUSE has phonetic ending " << phonetics << endl;
 
   cout << endl;
-
+  
   // Question 3
   cout << "====================== Question 3 ======================" << endl << endl;
 
@@ -82,7 +83,7 @@ int main() {
   cout << "The rhyme scheme of spenser.txt is " << scheme << endl;
 
   cout << endl;
-
+  
   // Question 4
   cout << "====================== Question 4 ======================" << endl << endl;
 
@@ -93,7 +94,7 @@ int main() {
     identify_sonnet("mystery.txt") << " sonnet" << endl;
 
   cout << endl;
-
+  
   cout << "======================= The End ========================" << endl << endl;
 
   return 0;

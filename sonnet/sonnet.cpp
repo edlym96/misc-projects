@@ -4,6 +4,7 @@
 #include <cassert>
 #include <map>
 #include <string>
+#include <fstream>
 
 using namespace std;
 
@@ -90,3 +91,93 @@ char rhyming_letter(const char *ending) {
 }
 
 /* START WRITING YOUR FUNCTION BODIES HERE */
+int count_words(const char* line){
+  int count = 1;
+  char word[512];
+  while(get_word(line, count, word)){
+    ++count;
+  }
+  return count-1;
+}
+
+bool find_phonetic_ending(const char* word, char* phonetic_ending){
+  ifstream in_stream;
+  char line[512];
+  char text [100];
+  strcpy(phonetic_ending, "");
+  in_stream.open("dictionary.txt");
+  in_stream.getline(line, 512);
+  while(!in_stream.eof()){
+    if(get_word(line, 1, text) && !strcmp(text, word)){
+      in_stream.close();
+      int count;
+      count = count_words(line);
+      int vowel;
+      vowel = find_vowel(line, count);
+      for(int i=vowel; i<count+1; ++i){
+	char temp[16];
+	get_word(line, i, temp);
+	strcat(phonetic_ending, temp);
+      }
+      return true;
+    }
+    in_stream.getline(line, 512);
+  }
+  in_stream.close();
+  return false;
+}
+
+int find_vowel(const char* line, int length){
+  for(int i=length; i>0; --i){
+    char temp[16];
+    get_word(line, i, temp);
+    int counter = 0;
+    while(temp[counter] != '\0'){
+      if(temp[counter] == 'A' || temp[counter] == 'E' || temp[counter] == 'I' || temp[counter] == 'O' || temp[counter] == 'U'){
+	return i;
+      }
+      ++counter;
+    }
+  }
+  return -1;
+}
+
+bool find_rhyme_scheme(const char* filename, char* scheme){
+ ifstream in_stream;
+ char line[512];
+ int counter=0;
+ in_stream.open(filename);
+ if(in_stream.fail()){
+   return false;
+ }
+ in_stream.getline(line, 512);
+ rhyming_letter(RESET);
+ while(!in_stream.eof()){
+   int count;
+   char word[256];
+   char phonetic[16];
+   count = count_words(line);
+   get_word(line, count, word);
+   if(find_phonetic_ending(word, phonetic)){
+     scheme[counter] = rhyming_letter(phonetic);
+     ++counter;
+   }
+   in_stream.getline(line, 512);
+ }
+ scheme[counter] = '\0';
+ return true;
+}
+
+const char* identify_sonnet(const char* filename){
+  char scheme[156];
+  if(find_rhyme_scheme(filename, scheme)){
+    if(!strcmp(scheme, "ababcdcdefefgg")){
+      return "Shakespearean";
+    }else if(!strcmp(scheme, "abbaabbacdcdcd")){
+      return "Petrarchan";
+    }else if(!strcmp(scheme, "ababbcbccdcdee")){
+      return "Spenserian";
+    }
+  }
+  return "Unkown";
+}
