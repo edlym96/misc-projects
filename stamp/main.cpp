@@ -1,6 +1,8 @@
 #include <iostream>
 #include <cstring>
 #include <cassert>
+#include <stdio.h>
+#include <stdlib.h>
 #include "stamp.h"
 
 using namespace std;
@@ -40,7 +42,7 @@ int main()
   cout << "The number of leading zeros in digest '00000a184d72f39730312554e0df25e6f95a05d4' is " << leading_zeros("00000a184d72f39730312554e0df25e6f95a05d4") << endl << endl;
 
   cout << "The number of leading zeros in digest '000000not-actually-a-hash' is " << leading_zeros("000000not-actually-a-hash") << endl << endl;
-  
+    
   cout << "====================== Question 2 ======================" << endl << endl;
   
   strcpy(digest, "");
@@ -70,7 +72,7 @@ int main()
   if (!success)
     cout << "There was an error reading the file." << endl;
   cout << endl;
-
+  /*  
   cout << "====================== Question 3 ======================" << endl << endl;
   
   char header[512];
@@ -97,7 +99,7 @@ int main()
   else
     cout << "There was an error generating the header." << endl;
   cout << endl;
-
+  */
   cout << "====================== Question 4 ======================" << endl << endl;
 
   // valid email
