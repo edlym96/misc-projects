@@ -52,7 +52,7 @@ int main() {
   else
     cout << "not found.";
   cout << endl << endl;
-
+  
   cout << "====================== Question 2 ======================" << endl << endl;
   
   cout << "The symbol for Victoria station is '" << get_symbol_for_station_or_line("Victoria") << "'" << endl << endl;
@@ -61,14 +61,14 @@ int main() {
 
   cout << "The symbol for the District Line is '" << get_symbol_for_station_or_line("District Line") << "'" << endl << endl;
 
-  /* Birmingham station is not on the Tube map, so this should return ' ' */
+  // Birmingham station is not on the Tube map, so this should return ' ' 
   cout << "The symbol for Birmingham station is '" << get_symbol_for_station_or_line("Birmingham") << "'" << endl << endl;
-
+  
   cout << "====================== Question 3 ======================" << endl << endl;
   
   char route[512], destination[512] = "nowhere";
 
-  /* valid route to Leicester Square with 1 line change */
+  // valid route to Leicester Square with 1 line change 
   strcpy(route, "S,SE,S,S,E,E,E,E,E,E,E,E,E,E,E");
   cout << "Starting at Oxford Circus and taking the steps:" << endl;
   cout << route << endl;
@@ -79,7 +79,7 @@ int main() {
     cout << "is an invalid route (" << error_description(result) << ")" << endl;
   cout << endl;
 
-  /* invalid route because of line hopping between stations */ 
+  // invalid route because of line hopping between stations 
   strcpy(route, "N,N,N,N,N,NE,W");
   cout << "Starting at London Bridge and taking the steps:" << endl;
   cout << route << endl;
@@ -90,7 +90,7 @@ int main() {
     cout << "is an invalid route (" << error_description(result) << ")" << endl;
   cout << endl;
 
-  /* invalid route because of backtracking between stations */
+  // invalid route because of backtracking between stations 
   strcpy(route, "W,W,E,W,W,W");
   cout << "Starting at Sloane Square and taking the steps:" << endl;
   cout << route << endl;
@@ -101,7 +101,7 @@ int main() {
     cout << "is an invalid route (" << error_description(result) << ")" << endl;
   cout << endl;
 
-  /* invalid route because route goes outside of map bounds */
+  // invalid route because route goes outside of map bounds 
   strcpy(route, "E,NE,SE,SE,SE");
   cout << "Starting at Marylebone and taking the steps:" << endl;
   cout << route << endl;

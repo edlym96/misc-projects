@@ -130,3 +130,213 @@ Direction string_to_direction(const char *token) {
   }
   return INVALID_DIRECTION;
 }
+
+bool get_symbol_position(char** map, int height, int width, const char target, int &r, int &c){
+  if(!isalnum(target)){
+    r = -1;
+    c = -1;
+    return false;
+  }
+  for(int i=0; i<height; ++i){
+    for(int j=0; j<width; ++j){
+      if(map[i][j] == target){
+	r = i;
+	c = j;
+	return true;
+      }
+    }
+  }
+  r = -1;
+  c = -1;
+  return false;
+}
+
+char get_symbol_for_station_or_line(const char* name){
+  char line[512];
+  char symbol;
+  char place[256];
+  ifstream in_stream;
+  in_stream.open("stations.txt");
+  in_stream.getline(line, 512);
+  if(in_stream.fail()){
+    in_stream.close();
+    return ' ';
+  }
+  while(!in_stream.eof()){
+    int i=2;
+    for(; i<strlen(line); ++i){
+      place[i-2] = line[i];
+    }
+    place[i-2] = '\0';
+    if(!strcmp(place, name)){
+      symbol = line[0];
+      return symbol;
+    }
+    in_stream.getline(line, 512);
+  }
+  in_stream.close();
+  in_stream.open("lines.txt");
+  in_stream.getline(line, 512);
+  if(in_stream.fail()){
+    in_stream.close();
+    return ' ';
+  }
+  while(!in_stream.eof()){
+    int i=2;
+    for(; i<strlen(line); ++i){
+      place[i-2] = line[i];
+    }
+    place[i-2] = '\0';
+    if(!strcmp(place, name)){
+      symbol = line[0];
+      return symbol;
+    }
+    in_stream.getline(line, 512);
+  }
+  in_stream.close();
+  return ' ';
+}
+
+int validate_route(char** map, int height, int width, const char* start_station, const char* route, char* destination){
+  int row;
+  int col;
+  char input[4];
+  Direction previous_dir;
+  int changes = 0;
+  char symbol = get_symbol_for_station_or_line(start_station);
+  if(symbol == ' '){
+    return ERROR_START_STATION_INVALID;
+  }
+  if(!get_symbol_position(map, height, width, symbol, row, col)){
+    return ERROR_START_STATION_INVALID;
+  }  
+  while(*route != '\0'){
+    int count = 0;
+    while(*route != ',' && *route != '\0'){
+      input[count] = *route; 
+      ++route;
+      ++count;
+    }
+    input[count] = '\0';
+    cout << input << endl;
+    Direction dir = string_to_direction(input);
+    char temp = map[row][col];
+    if(dir == N){
+      --row;
+    }else if(dir == S){
+      ++row;
+    }else if(dir == W){
+      --col;
+    }else if(dir == E){
+      ++col;
+    }else if(dir == NE){
+      ++col;
+      --row;
+    }else if(dir == NW){
+      --col;
+      --row;
+    }else if(dir == SE){
+      ++col;
+      ++row;
+    }else if(dir == SW){
+      --col;
+      ++row;
+    }else if(dir == INVALID_DIRECTION){
+      return ERROR_INVALID_DIRECTION;
+    }
+    
+    if(row > height-1 || col > width-1 || row < 0 || col < 0){
+      return ERROR_OUT_OF_BOUNDS;
+    }
+    if(map[row][col] == ' '){
+      return ERROR_OFF_TRACK;
+    }
+    if(temp != map[row][col] && !is_station(temp) && !is_station(map[row][col])){
+      return ERROR_LINE_HOPPING_BETWEEN_STATIONS;
+    }
+    if(get_opposite_direction(dir) == previous_dir){
+      return ERROR_BACKTRACKING_BETWEEN_STATIONS;
+    }
+    if(is_station(temp) && !is_station(map[row][col])){
+      ++changes;
+    }
+    previous_dir = dir;
+    ++route;
+  }
+  if(!is_station(map[row][col])){
+    return ERROR_ROUTE_ENDPOINT_IS_NOT_STATION;
+  }
+  if(symbol_to_station(map[row][col], destination)){
+    return changes;
+  }else{
+    return ERROR_ROUTE_ENDPOINT_IS_NOT_STATION;
+  }
+}
+
+bool is_station(const char symbol){
+  char line [512];
+  ifstream in_stream;
+  in_stream.open("stations.txt");
+  in_stream.getline(line, 512);
+  if(in_stream.fail()){
+    in_stream.close();
+    return false;
+  }
+  while(!in_stream.eof()){
+    if(line[0] == symbol){
+      return true;
+    }
+    in_stream.getline(line, 512);
+  }
+  return false;
+}
+
+Direction get_opposite_direction(Direction dir){
+  if(dir == N){
+    return S;
+  }else if(dir == S){
+    return N;
+  }else if(dir == W){
+    return E;
+  }
+  else if(dir == E){
+    return W;
+  }
+  else if(dir == NE){
+    return SW;
+  }
+  else if(dir == NW){
+    return SE;
+  }
+  else if(dir == SE){
+    return NW;
+  }else if(dir == SW){
+    return NE;
+  }else{
+    return INVALID_DIRECTION;
+  }
+}
+
+bool symbol_to_station(const char symbol, char* station){
+  char line [512];
+  ifstream in_stream;
+  in_stream.open("stations.txt");
+  in_stream.getline(line, 512);
+  if(in_stream.fail()){
+    in_stream.close();
+    return false;
+  }
+  while(!in_stream.eof()){
+    if(line[0] == symbol){
+      int i=2;
+      for(; i<strlen(line); ++i){
+	station[i-2] = station[i];
+      }
+      station[i-2] = '\0';
+      return true;
+    }
+    in_stream.getline(line, 512);
+  }
+  in_stream.close();
+  return false;
+}
