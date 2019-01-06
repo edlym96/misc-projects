@@ -1,6 +1,6 @@
 #include <iostream>
 #include "spell.h"
-
+#include <fstream>
 using namespace std;
 
 int main() {
@@ -18,7 +18,7 @@ int main() {
   cout << "The frequency of the word 'nonexistential' is " << frequency("nonexistential") << endl;
 
   cout << endl;
-    
+     
   cout << "====================== Question 2 ======================" << endl << endl;
 
   cout << "The edit distance between 'an' and 'na' is " << edit_distance("an","na") << endl;
