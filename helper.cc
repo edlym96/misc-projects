@@ -92,13 +92,15 @@ Job Circle_Queue::pop(){
   Job temp = *(queue[queue_start]);
   queue[queue_start]->~Job();
   queue[queue_start] = NULL;
-  if(++queue_start > int(queue.capacity()-1)) queue_start = 0;
+  //** update queue start
+  queue_start = (queue_start+1)%queue.capacity();
   return temp;
 }
 
 void Circle_Queue::push(Job* new_job){
   queue[queue_end] = new_job;
-  if(++queue_end > int(queue.capacity()-1)) queue_end = 0;
+  //** update queue end
+  queue_end = (queue_end+1)%queue.capacity();
 }
 
 Circle_Queue::Circle_Queue(int size):queue{}, queue_start(0), queue_end(0){
