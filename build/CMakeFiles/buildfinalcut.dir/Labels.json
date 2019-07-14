@@ -1,0 +1,43 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/homes/eyl215/MailPunk/build/CMakeFiles/buildfinalcut"
+		},
+		{
+			"file" : "/homes/eyl215/MailPunk/build/CMakeFiles/buildfinalcut.rule"
+		},
+		{
+			"file" : "/homes/eyl215/MailPunk/build/CMakeFiles/buildfinalcut-complete.rule"
+		},
+		{
+			"file" : "/homes/eyl215/MailPunk/build/buildfinalcut-prefix/src/buildfinalcut-stamp/buildfinalcut-install.rule"
+		},
+		{
+			"file" : "/homes/eyl215/MailPunk/build/buildfinalcut-prefix/src/buildfinalcut-stamp/buildfinalcut-mkdir.rule"
+		},
+		{
+			"file" : "/homes/eyl215/MailPunk/build/buildfinalcut-prefix/src/buildfinalcut-stamp/buildfinalcut-download.rule"
+		},
+		{
+			"file" : "/homes/eyl215/MailPunk/build/buildfinalcut-prefix/src/buildfinalcut-stamp/buildfinalcut-update.rule"
+		},
+		{
+			"file" : "/homes/eyl215/MailPunk/build/buildfinalcut-prefix/src/buildfinalcut-stamp/buildfinalcut-patch.rule"
+		},
+		{
+			"file" : "/homes/eyl215/MailPunk/build/buildfinalcut-prefix/src/buildfinalcut-stamp/buildfinalcut-configure.rule"
+		},
+		{
+			"file" : "/homes/eyl215/MailPunk/build/buildfinalcut-prefix/src/buildfinalcut-stamp/buildfinalcut-build.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"buildfinalcut"
+		],
+		"name" : "buildfinalcut"
+	}
+}

@@ -1,0 +1,43 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/homes/eyl215/MailPunk/build/CMakeFiles/buildetpan"
+		},
+		{
+			"file" : "/homes/eyl215/MailPunk/build/CMakeFiles/buildetpan.rule"
+		},
+		{
+			"file" : "/homes/eyl215/MailPunk/build/CMakeFiles/buildetpan-complete.rule"
+		},
+		{
+			"file" : "/homes/eyl215/MailPunk/build/buildetpan-prefix/src/buildetpan-stamp/buildetpan-install.rule"
+		},
+		{
+			"file" : "/homes/eyl215/MailPunk/build/buildetpan-prefix/src/buildetpan-stamp/buildetpan-mkdir.rule"
+		},
+		{
+			"file" : "/homes/eyl215/MailPunk/build/buildetpan-prefix/src/buildetpan-stamp/buildetpan-download.rule"
+		},
+		{
+			"file" : "/homes/eyl215/MailPunk/build/buildetpan-prefix/src/buildetpan-stamp/buildetpan-update.rule"
+		},
+		{
+			"file" : "/homes/eyl215/MailPunk/build/buildetpan-prefix/src/buildetpan-stamp/buildetpan-patch.rule"
+		},
+		{
+			"file" : "/homes/eyl215/MailPunk/build/buildetpan-prefix/src/buildetpan-stamp/buildetpan-configure.rule"
+		},
+		{
+			"file" : "/homes/eyl215/MailPunk/build/buildetpan-prefix/src/buildetpan-stamp/buildetpan-build.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"buildetpan"
+		],
+		"name" : "buildetpan"
+	}
+}

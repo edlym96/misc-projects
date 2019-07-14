@@ -1,0 +1,43 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/homes/eyl215/MailPunk/build/CMakeFiles/buildfinal"
+		},
+		{
+			"file" : "/homes/eyl215/MailPunk/build/CMakeFiles/buildfinal.rule"
+		},
+		{
+			"file" : "/homes/eyl215/MailPunk/build/CMakeFiles/buildfinal-complete.rule"
+		},
+		{
+			"file" : "/homes/eyl215/MailPunk/build/buildfinal-prefix/src/buildfinal-stamp/buildfinal-install.rule"
+		},
+		{
+			"file" : "/homes/eyl215/MailPunk/build/buildfinal-prefix/src/buildfinal-stamp/buildfinal-mkdir.rule"
+		},
+		{
+			"file" : "/homes/eyl215/MailPunk/build/buildfinal-prefix/src/buildfinal-stamp/buildfinal-download.rule"
+		},
+		{
+			"file" : "/homes/eyl215/MailPunk/build/buildfinal-prefix/src/buildfinal-stamp/buildfinal-update.rule"
+		},
+		{
+			"file" : "/homes/eyl215/MailPunk/build/buildfinal-prefix/src/buildfinal-stamp/buildfinal-patch.rule"
+		},
+		{
+			"file" : "/homes/eyl215/MailPunk/build/buildfinal-prefix/src/buildfinal-stamp/buildfinal-configure.rule"
+		},
+		{
+			"file" : "/homes/eyl215/MailPunk/build/buildfinal-prefix/src/buildfinal-stamp/buildfinal-build.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"buildfinal"
+		],
+		"name" : "buildfinal"
+	}
+}
