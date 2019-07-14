@@ -1,1 +1,2 @@
-# p5_minesweeper
+# server-ping
+simple server-ping java class
