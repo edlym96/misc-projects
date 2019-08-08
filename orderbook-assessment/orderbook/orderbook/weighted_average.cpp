@@ -12,7 +12,7 @@
 // Message struct to encapsulate the message fields
 struct Message {
 public:
-	// Variables to hold the fields of each input message
+	// Variables to hold the fields of input message
 	int timestamp;
 	char operation;
 	int id;
